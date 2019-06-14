@@ -1,0 +1,30 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+<h1>{{ question.question_text }}</h1>
+{% if question.nr_of_votes > 1 %}
+    <p>You can vote {{question.nr_of_votes}} times in total</p>
+{% endif %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+    {% endfor %}
+    <input type="submit" value="Vote">
+</form>
+
+<form action="{% url 'polls:add_choice' question.id %}" method="post">
+    {% csrf_token %}
+    <label for="add_choice">Add choice:</label>
+    <input type="text" name="add_choice" id="add_choice">
+    <input type="submit" name="add_choice_button" id="add_choice_button" value="Add">
+</form>
+
+<a href="{% url 'polls:results' question.id %}">See Result</a>
+<a href="{% url 'polls:index' %}">Back</a>
+
+{% endblock %}

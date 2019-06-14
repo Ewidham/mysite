@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Reliables</title>
+    </head>
+
+    <body>
+    {% if user.is_authenticated %}
+        <p>current user: {{user.username}}</p>
+        <a href="{% url 'logout' %}">Log out</a>
+    {% endif %}
+    {% block content %}{% endblock content %}
+    </body>
+</html>
